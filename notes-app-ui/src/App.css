@@ -10,7 +10,7 @@ body {
 @media (min-width: 600px) {
   .app-container {
     display: grid;
-    grid-template-columns: 200px 1 fr;
+    grid-template-columns: 200px 1fr;
     gap: 20px;
   }
 }
@@ -22,7 +22,7 @@ body {
   gap: 20px;
 }
 
-.notes-item {
+.note-item {
   display: flex;
   flex-direction: column;
   border: 1px solid #ccc;
@@ -64,7 +64,7 @@ input {
   font-size: 16px;
 }
 
-.note-form-button {
+.note-form button {
   border-radius: 5px;
   background-color: rgb(64, 154, 184);
   border: none;
@@ -73,7 +73,7 @@ input {
   color: white;
 }
 
-.note-form-button:hover {
+.note-form button:hover {
   background-color: rgb(106, 175, 198);
   cursor: pointer;
 }

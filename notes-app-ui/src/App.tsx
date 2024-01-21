@@ -48,8 +48,8 @@ const App = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/notes");
-
+        const response = await fetch("http://localhost:5000/api/v1/notes");
+        console.log(response);
         const notes: Note[] = await response.json();
 
         setNotes(notes);
@@ -79,7 +79,7 @@ const App = () => {
   const handleAddNote = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/api/notes", {
+      const response = await fetch("http://localhost:5000/api/v1/notes", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -135,19 +135,16 @@ const App = () => {
       return;
     }
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/notes/${selectedNote.id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            title,
-            content,
-          }),
-        }
-      );
+      await fetch(`http://localhost:5000/api/v1/notes/${selectedNote.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title,
+          content,
+        }),
+      });
       // response is only returned for postgres, doesnt work for mysql
       //const updatedNote = await response.json();
       const updatedNote: Note = {
@@ -185,7 +182,7 @@ const App = () => {
   const deleteNote = async (event: React.MouseEvent, noteId: number) => {
     event.stopPropagation();
     try {
-      await fetch(`http://localhost:5000/api/notes/${noteId}`, {
+      await fetch(`http://localhost:5000/api/v1/notes/${noteId}`, {
         method: "DELETE",
       });
 
