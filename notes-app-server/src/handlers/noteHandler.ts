@@ -1,10 +1,14 @@
 import express, { Request, Response } from "express";
-import * as noteService from "../service/noteService";
-import { iNote } from "../service/noteService";
+import * as noteService from "../services/noteService";
+import { iNote } from "../services/noteService";
 
 const getAllNotes = async (req: Request, res: Response) => {
-  const allNotes = await noteService.getAllNotes();
-  res.json(allNotes);
+  try {
+    const allNotes = await noteService.getAllNotes();
+    res.json(allNotes);
+  } catch (error) {
+    res.status(500).send({ status: "FAILED", data: error });
+  }
 };
 
 const getOneNote = (req: Request, res: Response) => {
@@ -15,10 +19,18 @@ const getOneNote = (req: Request, res: Response) => {
 const createNewNote = async (req: Request, res: Response) => {
   const { title, content } = req.body;
   if (!title || !content) {
-    return res.status(400).send("title and content fields required");
+    return res
+      .status(400)
+      .send(
+        "One of the following keys is missing or is empty in request body: 'title', 'content'"
+      );
   }
-  const createdNote = await noteService.createNewNote({ title, content });
-  res.json(createdNote);
+  try {
+    const createdNote = await noteService.createNewNote({ title, content });
+    res.status(201).json(createdNote);
+  } catch (error) {
+    res.status(500).send({ status: "FAILED", data: error });
+  }
 };
 
 const updateOneNote = async (req: Request, res: Response) => {
@@ -26,10 +38,22 @@ const updateOneNote = async (req: Request, res: Response) => {
   const id: number = parseInt(req.params.noteId);
   console.log(id);
   if (!title || !content) {
-    return res.status(400).send("title and content field required");
+    return res.status(400).send({
+      status: "FAILED",
+      data: {
+        error:
+          "One of the following keys is missing or is empty in request body: 'title', 'content'",
+      },
+    });
   }
   if (!id || isNaN(id)) {
-    return res.status(400).send("ID must be a valid number");
+    return res.status(400).send({
+      status: "FAILED",
+      data: {
+        error:
+          "Parameter ':noteId' can not be empty or ID must be a valid number",
+      },
+    });
   }
 
   try {
@@ -37,7 +61,7 @@ const updateOneNote = async (req: Request, res: Response) => {
     console.log(updatedNote);
     res.json(updatedNote);
   } catch (error) {
-    res.status(500).send("Oops, something went wrong");
+    res.status(500).send({ status: "FAILED", data: { error: error } });
   }
 };
 
@@ -45,13 +69,15 @@ const deleteOneNote = async (req: Request, res: Response) => {
   const id = parseInt(req.params.noteId);
 
   if (!id || isNaN(id)) {
-    return res.status(400).send("ID field required");
+    return res
+      .status(400)
+      .send({ status: "FAILED", data: { error: "ID field required" } });
   }
   try {
     const deletedNote = await noteService.deleteOneNote(id);
     res.sendStatus(204);
   } catch (error) {
-    res.status(500).send("Oops, something went wrong");
+    res.status(500).send({ status: "FAILED", data: { error: error } });
   }
 };
 

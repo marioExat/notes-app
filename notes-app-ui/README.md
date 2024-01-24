@@ -89,15 +89,47 @@ Refer these two for sequelise [connection](https://dev.to/julfikarhaidar/rest-ap
 
 ## Part 3 - Connect UI to Backend
 
+### Use data caching for performance improvements
 
+`npm i apicache`
+
+Using a data cache is also a great practice to improve the overall experience and performance of our API.
+
+It makes a lot of sense to use a cache to serve data from, when the data is an often requested resource or/and querying that data from the database is a heavy lift and may take multiple seconds.
+
+You can store this type of data inside your cache and serve it from there instead of going to the database every time to query the data.
+
+One important thing you have to keep in mind when serving data from a cache is that this data can become outdated. So you have to make sure that the data inside the cache is always up to date.
+
+There are many different solutions out there. One appropriate example is to use redis or the express middleware apicache.
+
+I'd like to go with apicache, but if you want to use Redis, I can highly recommend that you check out their great docs.
+
+Inside the cache you can define how long your data should be cached. For the sake of this tutorial I've chosen two minutes. The time depends on how fast or how often your data inside your cache changes.
+
+When I start building an API and there are no particular reasons to use a cache straight away, I leave it out and see what happens over time. When reasons arise to use a cache, I can implement it then.
+
+### Good Security Practices
+
+The first and absolute must have is to use SSL/TLS because it's a standard nowadays for communications on the internet. It's even more important for API's where private data is send between the client and our API.
+
+If you've got resources that should only be available to authenticated users, you should protect them with an authentication check. 
+
+### Document your API properly
+
+Like in other fields of computer science there's also some sort of standard for documenting API's called [OpenAPI Specification](https://swagger.io/specification/).
+
+This is basically the whole magic to add an endpoint to our swagger docs. You can look up all the specifications to describe an endpoint in their [great docs](https://swagger.io/docs/specification/about/).
 
 ## Action Items
+
 - [ ] Create a branch and migrate existing code to run with [axios](https://www.freecodecamp.org/news/how-to-use-axios-with-react/)
 - [ ] Create another branch to use redux instead of react hooks
 - [ ] Create a factory pattern with the option to save either using sequalise or mongoose
-https://www.freecodecamp.org/news/typescript-tutorial-for-react-developers/
-https://www.freecodecamp.org/news/how-to-build-a-shopping-cart-with-react-and-typescript/
-https://www.freecodecamp.org/news/full-stack-project-create-a-recipe-app-using-react-node-js/#how-to-setup-the-database-and-prisma
-https://www.freecodecamp.org/news/top-javascript-concepts-to-know-before-learning-react/
-https://www.freecodecamp.org/news/javascript-concepts-you-should-know-before-learning-react/
-https://www.freecodecamp.org/news/javascript-concepts-to-know-before-learning-react/
+      https://www.freecodecamp.org/news/typescript-tutorial-for-react-developers/
+      https://www.freecodecamp.org/news/how-to-build-a-shopping-cart-with-react-and-typescript/
+      https://www.freecodecamp.org/news/full-stack-project-create-a-recipe-app-using-react-node-js/#how-to-setup-the-database-and-prisma
+      https://www.freecodecamp.org/news/top-javascript-concepts-to-know-before-learning-react/
+      https://www.freecodecamp.org/news/javascript-concepts-you-should-know-before-learning-react/
+      https://www.freecodecamp.org/news/javascript-concepts-to-know-before-learning-react/
+https://developer.auth0.com/resources/guides/api/express
